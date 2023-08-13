@@ -2,3 +2,7 @@
 	path = astronvim_config
 	url = git@github.com:rafa-thayto/astronvim_config.git
 	branch = main
+[submodule "kitty"]
+	path = kitty
+	url = git@github.com:rafa-thayto/kitty-configs.git
+	branch = main
