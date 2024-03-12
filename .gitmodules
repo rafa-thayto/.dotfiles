@@ -6,3 +6,7 @@
 	path = kitty
 	url = git@github.com:rafa-thayto/kitty-configs.git
 	branch = main
+[submodule "lazy-thayto-vim"]
+	path = lazy-thayto-vim
+	url = git@github.com:rafa-thayto/lazy-thayto-vim.git
+	branch = main
