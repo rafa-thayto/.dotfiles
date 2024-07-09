@@ -12,12 +12,6 @@ export ZSH="$HOME/.oh-my-zsh"
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
 
@@ -75,6 +69,7 @@ ZSH_THEME="robbyrussell"
 plugins=(
   git
   asdf
+  # pnpm-shell-completion
   docker
   kubectl
   zsh-autosuggestions
@@ -91,11 +86,18 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='nvim'
+else
+  export EDITOR='nvim'
+fi
+
+if type brew &>/dev/null; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+  autoload -Uz compinit
+  compinit
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -109,12 +111,38 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias projects="cd ~/projects"
+alias indie="cd ~/projects/indie"
+alias tutorandus="cd ~/projects/indie/tutorandus.com"
+alias heduco="cd ~/projects/heducoo"
+alias vim="nvim"
+alias vi="nvim"
+alias oldvim="\vim"
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/rafael.thayto/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+# bun completions
+[ -s "/opt/homebrew/Cellar/bun/0.8.1/share/zsh/site-functions/_bun" ] && source "/opt/homebrew/Cellar/bun/0.8.1/share/zsh/site-functions/_bun"
+
+[ -f "/Users/thayto/.ghcup/env" ] && source "/Users/thayto/.ghcup/env" # ghcup-env
+
+# Golang
+export GOPATH="$HOME/go"
+
+# pnpm
+export PNPM_HOME="/Users/thayto/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# fzf
+eval "$(fzf --zsh)"
+# fzf end
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 
-source /Users/rafael.thayto/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+bindkey '^ ' autosuggest-accept
+
+source ~/completion-for-pnpm.zsh
+
